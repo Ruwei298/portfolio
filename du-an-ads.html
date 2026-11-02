@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="vi"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bộ quảng cáo — Chương trình coaching Copywriting 12 tuần</title>
+  <meta name="description" content="Bộ ba quảng cáo nhắm vào ba tệp khác nhau, bài tập thực hành.">
+    <script>
+    /* Áp dụng chế độ sáng/tối trước khi trang hiện ra, tránh nhấp nháy */
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem('theme'); } catch (e) {}
+      if (t !== 'light' && t !== 'dark') {
+        t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+  <style>
+    :root {
+      --bg: #fbf5df;
+      --ink: #0d0d0d;
+      --muted: #4f4e46;
+      --accent: #fbe9a6;       /* vàng pastel: nền nhãn, highlight */
+      --accent-2: #c4ecd3;     /* xanh lá pastel: nền nhãn, hover */
+      --accent-text: #0d0d0d;  /* chữ đặt trên nền pastel luôn đậm */
+      --label: #2f5d43;       /* màu nhãn nhỏ */
+      --dot: #0d0d0d;          /* màu chấm ảnh */
+      --btn-bg: #0d0d0d;
+      --btn-fg: #fbe9a6;
+      --panel: #0d0d0d;        /* khối liên hệ */
+      --panel-fg: #fbf5df;
+      --panel-muted: rgba(251, 245, 223, 0.75);
+      --green: var(--accent-2);
+      --green-deep: var(--label);
+      --yellow: var(--accent);
+      --mono: ui-monospace, "JetBrains Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+      --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color-scheme: light;
+    }
+    [data-theme="dark"] {
+      --bg: #121411;
+      --ink: #f3efdc;
+      --muted: #b9b6a6;
+      --label: #9fe0b8;
+      --dot: #f3efdc;
+      --btn-bg: #f3efdc;
+      --btn-fg: #0d0d0d;
+      --panel: #1d201b;
+      --panel-fg: #f3efdc;
+      --panel-muted: rgba(243, 239, 220, 0.72);
+      color-scheme: dark;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; border-radius: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+    a { color: var(--ink); }
+    .container { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+    .mono { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; }
+
+    .nav .container { display: flex; justify-content: space-between; align-items: center; height: 60px; }
+    .logo { font-weight: 800; font-size: 1.05rem; letter-spacing: -0.01em; text-decoration: none; color: var(--ink); }
+    .logo::after { content: "."; color: var(--green-deep); }
+    .nav-links a { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; }
+    .nav-links a:hover { text-decoration: underline; text-decoration-color: var(--green); text-decoration-thickness: 3px; text-underline-offset: 6px; }
+
+    .page-head { padding: 72px 0 56px; }
+    .back { display: inline-block; margin-bottom: 32px; font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; }
+    .back:hover { text-decoration: underline; text-decoration-color: var(--green); text-decoration-thickness: 3px; text-underline-offset: 6px; }
+    .note { display: inline-block; margin-bottom: 18px; padding: 4px 10px; background: var(--green); font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; }
+    h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; line-height: 1.08; letter-spacing: -0.03em; }
+    .intro { margin-top: 24px; max-width: 640px; color: var(--muted); font-size: 1.05rem; }
+
+    section { padding: 56px 0; }
+    .ad-label { font-family: var(--mono); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 20px; }
+    .ad-label span { background: var(--yellow); padding: 3px 8px; }
+    .ad-meta { margin-bottom: 8px; }
+    .ad-meta b { font-weight: 700; color: var(--green-deep); }
+    .ad-goal { margin-bottom: 28px; }
+    .ad-goal b { font-weight: 700; color: var(--green-deep); }
+    .ad-copy p { margin-bottom: 14px; }
+    .ad-copy .head { font-weight: 400; margin-bottom: 14px; }
+    .ad-copy ul { list-style: none; margin: 6px 0 14px; }
+    .ad-copy li { padding: 2px 0; }
+    .ad-copy a { text-underline-offset: 3px; }
+
+    footer { padding: 32px 0; }
+    footer .container { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; }
+    footer a { color: var(--ink); }
+
+    @media (max-width: 760px) {
+      .nav-links a { font-size: 0.66rem; }
+      .page-head { padding: 48px 0 40px; }
+    }
+  
+    /* ---------- Chế độ sáng / tối ---------- */
+    :root { --accent-text: #0d0d0d; }
+    body { transition: background-color 0.3s, color 0.3s; }
+    .nav-links { display: flex; gap: 28px; align-items: center; }
+    .theme-switch {
+      position: relative; width: 58px; height: 28px; padding: 0; flex: none;
+      border: 1px solid var(--ink); border-radius: 999px; background: transparent;
+      color: var(--ink); cursor: pointer;
+    }
+    .theme-switch:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+    .theme-switch .knob {
+      position: absolute; top: 2px; left: 2px; width: 22px; height: 22px; border-radius: 50%;
+      background: var(--ink); transition: transform 0.25s ease;
+    }
+    .theme-switch[aria-checked="true"] .knob { transform: translateX(30px); }
+    .theme-switch svg {
+      position: absolute; top: 50%; width: 14px; height: 14px; margin-top: -7px;
+      fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .theme-switch .ic-sun { left: 6px; }
+    .theme-switch .ic-moon { right: 6px; }
+    .theme-switch[aria-checked="false"] .ic-sun { color: var(--bg); }
+    .theme-switch[aria-checked="true"] .ic-moon { color: var(--bg); }
+    .ad-label span, .stage-label span, .note { color: var(--accent-text); }
+    .logo::after { color: var(--label); }
+
+    /* Modern editorial typography: no programming-style monospace */
+    :root { --mono: "Inter", "Segoe UI", Arial, sans-serif; --sans: "Inter", "Segoe UI", Arial, sans-serif; }
+    .mono, .nav-links a, .label, .note, .project-meta, .back, .ad-label,
+    .plan-tag, .flow, .sp-num, .sp-count, .em-no, .lbl, .full summary,
+    footer .container { font-family:var(--sans); letter-spacing:.015em; text-transform:none; }
+    .nav-links a { font-size:.86rem; font-weight:600; }
+    .mono { font-size:.84rem; font-weight:600; }
+    .label { font-size:.83rem; font-weight:650; letter-spacing:.015em; }
+    .note, .plan-tag, .em-no { font-size:.78rem; font-weight:650; letter-spacing:0; }
+    .project-meta, .sp-num, .sp-count, .lbl, .flow, .ad-label { font-size:.82rem; letter-spacing:0; }
+    .btn { font-family:var(--sans); font-size:.9rem; font-weight:650; letter-spacing:-.005em; text-transform:none; padding:13px 21px; transition:background-color .2s ease,color .2s ease,transform .2s ease; }
+    .btn:hover { transform:translateY(-2px); }
+    .tag { font-family:var(--sans); font-size:.82rem; letter-spacing:0; text-transform:none; font-weight:650; }
+    footer .container { font-size:.8rem; }
+    @media (prefers-reduced-motion:reduce) { .btn:hover {transform:none;} }
+  
+
+/* Shared visual language with approved portfolio home page */
+:root { --accent-2:#263B2B; --accent-text:#FFF8E6; --label:#263B2B; --panel:#263B2B; --panel-fg:#FFF8E6; --panel-muted:#E8E6D9; --mono:"Segoe UI",Inter,system-ui,Arial,sans-serif; --sans:"Segoe UI",Inter,system-ui,Arial,sans-serif; }
+[data-theme="dark"] { --accent-2:#A9D6AE; --accent-text:#15251A; --label:#A9D6AE; --panel:#A9D6AE; --panel-fg:#15251A; --panel-muted:#263B2B; }
+.nav .logo { font-family:var(--sans);font-size:1.28rem;font-weight:600;letter-spacing:-.025em;line-height:1.2; }
+.logo::after {content:none!important;display:none!important;}
+h1 {font-family:var(--sans);font-size:clamp(2.3rem,4.8vw,3.8rem);font-weight:700;line-height:1.26;letter-spacing:-.025em;overflow-wrap:break-word;}
+h2,h3 {font-family:var(--sans);line-height:1.32;letter-spacing:-.015em;}
+.note,.tag,.plan-tag,.stage-label span,.ad-label span {background:var(--accent-2);color:var(--accent-text)!important;}
+.note,.tag,.plan-tag,.stage-label span,.ad-label span {font-family:var(--sans);font-weight:650;letter-spacing:0;text-transform:none;}
+.nav-links a,.back,.mono,.ad-label,.lbl,.sp-num,.sp-count,.flow,footer .container {font-family:var(--sans);letter-spacing:0;text-transform:none;}
+[data-theme="dark"] .note,[data-theme="dark"] .tag,[data-theme="dark"] .plan-tag,[data-theme="dark"] .stage-label span,[data-theme="dark"] .ad-label span {background:#A9D6AE!important;color:#15251A!important;border-color:#A9D6AE!important;}
+[data-theme="dark"] .btn:hover {background:#A9D6AE!important;color:#15251A!important;border-color:#A9D6AE!important;}
+@media(max-width:700px){h1{font-size:clamp(2rem,8vw,3rem);line-height:1.3}.container{padding-inline:20px}}
+
+
+/* Facebook-inspired post presentation; original copy remains untouched */
+.ad-copy{background:#fff;color:#1c1e21;border:1px solid #d9dce1;border-radius:12px;padding:0 26px 26px;box-shadow:0 3px 14px rgba(0,0,0,.055);overflow:hidden;font-size:.97rem;line-height:1.72}
+.ad-copy::before{content:"Bài viết quảng cáo  ·  Facebook";display:block;margin:0 -26px 24px;padding:17px 26px;border-bottom:1px solid #e8e9ec;color:#59616b;font-size:.81rem;font-weight:650;letter-spacing:0}
+.ad-copy p,.ad-copy li{color:#1c1e21}
+.ad-copy a{color:#2463ad;overflow-wrap:anywhere}
+[data-theme="dark"] .ad-copy{background:#242b27;color:#f3efdc;border-color:#536356;box-shadow:0 4px 20px rgba(0,0,0,.18)}
+[data-theme="dark"] .ad-copy::before{color:#c9d9cc;border-bottom-color:#465448}
+[data-theme="dark"] .ad-copy p,[data-theme="dark"] .ad-copy li{color:#f3efdc}
+[data-theme="dark"] .ad-copy a{color:#a9d6ae}
+@media(max-width:600px){.ad-copy{padding:0 17px 20px;border-radius:9px}.ad-copy::before{margin:0 -17px 20px;padding:15px 17px}}
+</style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="container">
+      <a href="index.html" class="logo">Ruwei</a>
+      <div class="nav-links">
+        <a href="index.html#du-an">Dự án</a>
+        <button class="theme-switch" id="theme-toggle" type="button" role="switch" aria-checked="false" aria-label="Chế độ tối"><span class="knob"></span><svg class="ic-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><svg class="ic-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></button>
+      </div>
+    </div>
+  </nav>
+
+  <header class="page-head">
+    <div class="container">
+      <a href="index.html#du-an" class="back">← Quay lại trang chính</a>
+      <div><span class="note">Dự án trong quá trình học Copywriting</span></div>
+      <h1>Bộ quảng cáo — Chương trình coaching Copywriting 12 tuần</h1>
+      <p class="intro">Bộ ba quảng cáo nhắm vào ba tệp khách hàng khác nhau. Mỗi tệp có một nỗi lo riêng, nên mỗi creative có một mục tiêu riêng.</p>
+    </div>
+  </header>
+
+  <!-- Ads 1 -->
+  <section>
+    <div class="container">
+      <div class="ad-label"><span>Ad 1 · Tệp mass</span></div>
+      <p class="ad-meta"><b>Tệp khách hàng:</b> Người đã biết Copywriting nhưng chưa kiếm được khách, người đi làm.</p>
+      <p class="ad-goal"><b>Mục tiêu:</b> Giải quyết objection "khóa học có hiệu quả không" bằng cách cho khách hàng thấy khóa học hỗ trợ sát sao như thế nào cho chị Thơm.</p>
+
+      <div class="ad-copy">
+        <p>Với 2-3 tiếng mỗi tối, Chị Thơm - một bà mẹ 2 con đã có thể kiếm thêm 10tr/tháng từ kỹ năng Copywriting chỉ sau 2 tháng bắt đầu từ con số 0 tròn trĩnh.</p>
+        <p>Chị Thơm đã làm điều đó như thế nào?</p>
+        <p>Tua lại một năm trước...</p>
+        <p>Mỗi ngày chị đều có mặt ở công ty vào 9 giờ sáng, làm quần quật đến 6 giờ tối. Nhiều khi còn phải tăng ca thêm 1-2 tiếng để làm báo cáo.</p>
+        <p>Nhưng mỗi tháng chỉ kiếm được 14-15tr. Hai vợ chồng chị vẫn luôn sầu não khi nhắc về việc chi tiêu cho gia đình.</p>
+        <p>Nào là tiền điện, tiền nước, tiền cho con đi học, tiền gửi ông bà 2 bên.</p>
+        <p>Chị cảm thấy nỗ lực đi làm bao nhiêu cũng không đủ.</p>
+        <p>Lo lắng, bế tắc, nhiều lúc chị ôm chồng mà khóc.</p>
+        <p>Ngay thời điểm đó, chị biết đến và tham gia "Chương trình đồng hành chuyên sâu 12 tuần" về Copywriting của mình.</p>
+        <p>Ban ngày chị vẫn đi làm ở công ty, tối tranh thủ 2-3 tiếng học Copywriting.</p>
+        <p>Lúc đầu chị viết 1 bài phải mất vài hôm, nhiều chỗ còn dài dòng, khó hiểu.</p>
+        <p>Nhưng sau khi được coach chỉ ra những lỗi sai, những điểm mù trong tư duy thì càng luyện tập chị càng thấy mình tiến bộ, càng có động lực để viết nhiều hơn.</p>
+        <p>Để rồi sau 1 tháng, chị rút ngắn được thời gian viết xuống còn dưới 2 tiếng, lập luận cũng gãy gọn và thuyết phục hơn. Chị cảm thấy đủ tự tin ra ngoài tìm khách hàng.</p>
+        <p>Theo đà trước đó, chị tiếp cận khách -&gt; bị từ chối -&gt; hỏi coach chỉ ra lỗi sai -&gt; tiếp tục tìm khách.</p>
+        <p>Mấu chốt là dù trả lời hay thương thảo với khách thế nào cho thuyết phục thì đều đã có coach tư vấn, chị chỉ cần kiên trì làm theo là được.</p>
+        <p>Và rất nhanh, trong tháng tiếp theo chị chốt được một khách hàng ở thị trường Việt Nam.</p>
+        <p>Thành công ký hợp đồng dài hạn với mức lương 10tr/tháng, nâng trần thu nhập lên 25tr/tháng.</p>
+        <p>Chị Thơm giờ đây đã nhẹ nhõm hơn vào cuối tháng, có đủ tiền để lo cho sinh hoạt gia đình, tiết kiệm cho con học đại học và lo cho ba mẹ đau ốm.</p>
+        <p>Đó là cách khóa Group Coaching của mình hỗ trợ sát sao để chị Thơm cũng như giúp nhiều bạn học viên khác thành công kiếm được 20-30tr/tháng với Copywriting.</p>
+        <p>Nếu bạn cũng muốn có sự hỗ trợ tương tự, mình đã hệ thống hóa toàn bộ quy trình học Copywriting từ A-Z và tạo ra "Chương trình đồng hành chuyên sâu 12 tuần".</p>
+        <p>Khi tham gia bạn sẽ nhận được:</p>
+        <ul>
+          <li>✅ Bộ tài liệu ĐỘC QUYỀN: Kiến thức được thiết kế trọng tâm về Copywriting, được cập nhật liên tục để kỹ năng của bạn tiến bộ nhanh chóng.</li>
+          <li>✅ Cố vấn 1-1: Bạn sẽ không bao giờ hoang mang một mình, từ chữa bài viết cho đến tìm khách hàng, các Coach dày dặn kinh nghiệm sẽ gỡ rối trực tiếp, giúp bạn tiết kiệm thời gian, công sức.</li>
+          <li>✅ Masterclass 2 buổi/tuần: Chia sẻ những chủ đề chuyên sâu về insight của ngành và phân tích dự án thực tế của các học viên, giúp bạn nâng cấp tư duy làm nghề.</li>
+        </ul>
+        <p class="head">Lời cam kết cao nhất từ mình:</p>
+        <p>Bạn sẽ nhận được sự hỗ trợ sát sao đến khi nào chinh phục được khách hàng thì thôi.</p>
+        <p>Nếu bạn thực sự nghiêm túc hãy bấm vào đường link bên dưới để xem chi tiết lộ trình.</p>
+        <p>👉 <a href="https://truonghaphuong.com/copywriting-coaching-group/">https://truonghaphuong.com/copywriting-coaching-group/</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ads 2 -->
+  <section>
+    <div class="container">
+      <div class="ad-label"><span>Ad 2 · Tệp mass</span></div>
+      <p class="ad-meta"><b>Tệp khách hàng:</b> Sinh viên đang đi học, từng đi làm thêm nhưng thu nhập bèo bọt.</p>
+      <p class="ad-goal"><b>Mục tiêu:</b> Xây dựng niềm tin kiếm ra tiền/thu nhập từ Copywriting bằng case của Khôi (sinh viên năm 2).</p>
+
+      <div class="ad-copy">
+        <p class="head">Lời đồn là có thật…</p>
+        <p>Những sinh viên thu nhập 10-15tr/tháng, tự trả được học phí, tự lo tiền nhà, tiền sinh hoạt hàng tháng KHÁC BIỆT LỚN so với những sinh viên còn phụ thuộc vào gia đình.</p>
+        <p>Nhưng không phải họ thông minh hơn. Nhiều sinh viên thông minh được điểm cao trên trường, lúc về nhà vẫn ăn mì tôm mỗi cuối tháng.</p>
+        <p>Không phải họ chăm chỉ hơn. Nhiều bạn làm thêm quán cà phê 4-8 tiếng/ngày vẫn chỉ được mức lương bèo bọt.</p>
+        <p>Không phải họ may mắn hơn. Vì may mắn không tạo ra kết quả lâu dài.</p>
+        <p>Điều khác biệt rất đơn giản: Thay vì kiếm tiền theo từng giờ lao động. Sinh viên kiếm 10-15tr/tháng, kiếm tiền bằng kỹ năng thu nhập cao.</p>
+        <p>Mình biết điều này bởi vì Khôi - học viên trong khóa Coaching của mình đã đi từ con số 0 tròn trĩnh đến mức thu nhập 17tr/tháng với kỹ năng Copywriting, dù đang chỉ là sinh viên năm 2.</p>
+        <p>Khi mới bắt đầu, Khôi không có bằng cấp chuyên ngành, không một chút kinh nghiệm viết lách.</p>
+        <p>Thế nhưng, chỉ cần dành ra 2-3 tiếng mỗi tối để học Copywriting thì sau đúng 2 tháng Khôi chốt được dự án đầu tiên với 6 triệu/tháng.</p>
+        <p>Và sau 2 tháng tiếp theo, bạn ấy bứt phá lên mức thu nhập 17 triệu/tháng với các dự án Email Marketing &amp; Ads.</p>
+        <p>Vậy "Copywriting là gì?" và "Tại sao Copywriting lại là kỹ năng thu nhập cao?"</p>
+        <p>Đơn giản: Đây là kỹ năng viết những bài bán hàng đúng insight, chuyển đổi cao, giúp doanh nghiệp gia tăng doanh số.</p>
+        <p>Và khi bạn giúp khách hàng KIẾM THÊM TIỀN, họ sẵn sàng trích 10-15% để trả cho bạn.</p>
+        <p>Tưởng tượng:</p>
+        <p>Khách hàng có doanh số 400 triệu/tháng.</p>
+        <p>Bạn giúp họ tăng lên 600 triệu/tháng.</p>
+        <p>Họ kiếm thêm 200 triệu.</p>
+        <p>Trả bạn 10% = 20 triệu/tháng.</p>
+        <p>Nghe hấp dẫn đúng không?</p>
+        <p>Nhưng mình cũng muốn thẳng thắn với bạn:</p>
+        <p>Đây không phải là bùa phép thần kì. Cũng không phải "làm giàu nhanh trong 30 ngày".</p>
+        <p>Bạn vẫn cần đầu tư thời gian và công sức. Kiên trì những lúc mệt mỏi và thử thách nhất.</p>
+        <p>Nhưng đó cũng là cơ hội để bạn nhận mức thù lao tương xứng với chất xám và nỗ lực mà bạn bỏ ra thay vì phải kiếm tiền theo từng giờ lao động.</p>
+        <p>Là cơ hội để mỗi tháng không còn phải ngửa tay xin tiền ba mẹ, tự tay trả được học phí và ăn những món ngon mà bạn thích.</p>
+        <p>Sau 4 năm kinh nghiệm làm Copywriting cho hơn 100 dự án của nhiều khách hàng Mỹ, Hà Lan, Việt Nam… Từng chốt được job 75 triệu/tháng vào năm thứ 2.</p>
+        <p>Mình đã đóng gói những kinh nghiệm thực chiến từ A-Z và tạo ra "Chương trình đồng hành chuyên sâu 12 tuần" - giúp bạn rút ngắn con đường học Copywriting 2-3 lần.</p>
+        <p>Khi tham gia bạn sẽ có những đặc quyền:</p>
+        <ul>
+          <li>✅ Bộ tài liệu ĐỘC QUYỀN: Kiến thức được thiết kế trọng tâm về Copywriting, được cập nhật liên tục để kỹ năng của bạn tiến bộ nhanh chóng.</li>
+          <li>✅ Cố vấn 1-1: Bạn sẽ không bao giờ hoang mang một mình, từ chữa bài viết cho đến tìm khách hàng, các Coach dày dặn kinh nghiệm sẽ gỡ rối trực tiếp, giúp bạn tiết kiệm thời gian, công sức.</li>
+          <li>✅ Masterclass 2 buổi/tuần: Chia sẻ những chủ đề chuyên sâu về insight của ngành và phân tích dự án thực tế của các học viên, giúp bạn nâng cấp tư duy làm nghề.</li>
+        </ul>
+        <p class="head">Lời cam kết cao nhất từ mình:</p>
+        <p>Bạn sẽ nhận được sự hỗ trợ sát sao đến khi nào chinh phục được khách hàng thì thôi.</p>
+        <p>Nếu bạn thực sự nghiêm túc hãy bấm vào đường link bên dưới để xem chi tiết lộ trình.</p>
+        <p>👉 <a href="https://truonghaphuong.com/copywriting-coaching-group/">https://truonghaphuong.com/copywriting-coaching-group/</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ads 3 -->
+  <section>
+    <div class="container">
+      <div class="ad-label"><span>Ad 3 · Tệp retargeting</span></div>
+      <p class="ad-meta"><b>Tệp khách hàng:</b> Những người đã biết/thử qua Copywriting và biết Trương Phương nhưng chưa kiếm được khách.</p>
+      <p class="ad-goal"><b>Mục tiêu:</b> Xây dựng giá trị nhận thức đủ nhiều, bằng chứng và cam kết đủ mạnh để khách xuống tiền.</p>
+
+      <div class="ad-copy">
+        <p>Dành cho những ai muốn kiếm tiền từ Copywriting, nhưng đã 6 tháng hay hơn 1 năm vẫn chưa kiếm được khách hàng.</p>
+        <p>Trong 12 tuần tới, mình cùng đội ngũ sẽ bàn giao cho bạn hệ thống kiến thức và sự hỗ trợ sát sao nhất trong quá trình Luyện viết copy - Tìm kiếm khách hàng - Làm dự án đầu tiên.</p>
+        <p>Để bạn tiến gần hơn mức thu nhập 1000$/tháng với Copywriting.</p>
+        <p>Kể cả khi bạn không có bằng cấp chuyên môn, chưa có kinh nghiệm hay không giỏi viết lách.</p>
+        <p>Và bạn cũng không cần phải giỏi tiếng Anh, phải nghỉ học hay nghỉ làm.</p>
+        <p class="head">Mục tiêu của chúng ta trong 12 tuần:</p>
+        <p>Từ con số 0 tròn trĩnh đến chinh phục được kỹ năng Copywriting và chốt được khách hàng đầu tiên.</p>
+        <p>Như cách các học viên của mình đã thành công:</p>
+        <ul>
+          <li>Chissa - Sinh viên năm 2 kiếm 20tr/tháng sau 4 tháng hành nghề. Hiện đang làm cho 1 khách hàng nước ngoài &amp; 1 agency ở Việt Nam.</li>
+          <li>Chị Trâm - đạt thu nhập 48tr/tháng dù bắt đầu không phải từ ngành Marketing mà là chăm sóc khách hàng.</li>
+          <li>Chị Nhã Tiên - đạt thu nhập 31tr/tháng sau 2 tháng với thị trường Mỹ.</li>
+          <li>Chị Thơm - Sau 1 tháng tham group Coaching, chị đã chốt được khách 10tr/tháng, dù đang là bà mẹ 2 con.</li>
+          <li>Em Tú - sinh viên năm 2 ngành Luật đạt 20tr/tháng với Copywriting.</li>
+        </ul>
+        <p>Và còn rất nhiều các bạn khác nữa…</p>
+        <p>Nếu sau 12 tuần mà bạn chưa chốt được khách hàng, mình và đội ngũ sẽ tiếp tục đồng hành hoàn toàn miễn phí cho tới khi bạn thắng được job đầu tiên thì thôi.</p>
+        <p>Bạn được đảm bảo 100% - không rủi ro.</p>
+        <p>Chương trình này phù hợp với bạn nếu bạn muốn được:</p>
+        <ul>
+          <li>✅ Bộ tài liệu ĐỘC QUYỀN: Kiến thức được thiết kế trọng tâm về Copywriting, được cập nhật liên tục để kỹ năng của bạn tiến bộ nhanh chóng.</li>
+          <li>✅ Cố vấn 1-1: Bạn sẽ không bao giờ hoang mang một mình, từ chữa bài viết cho đến tìm khách hàng, các Coach dày dặn kinh nghiệm sẽ gỡ rối trực tiếp, giúp bạn tiết kiệm thời gian, công sức.</li>
+          <li>✅ Masterclass 2 buổi/tuần: Chia sẻ những chủ đề chuyên sâu về insight của ngành và phân tích dự án thực tế của các học viên, giúp bạn nâng cấp tư duy làm nghề.</li>
+        </ul>
+        <p>Tuy nhiên, mình chỉ có thể mở 10 suất cho những ai phù hợp để giữ chương trình được chất lượng.</p>
+        <p>Đặt lịch phỏng vấn 1-1 với đội ngũ của mình trước khi đóng cổng đăng ký 👇</p>
+        <p><a href="https://truonghaphuong.com/dat-lich/">https://truonghaphuong.com/dat-lich/</a></p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <span>© 2026 Ruwei</span>
+      <a href="index.html#du-an">← Quay lại trang chính</a>
+    </div>
+  </footer>
+
+  <script>
+    /* ---------- Chế độ sáng / tối ---------- */
+    (function () {
+      var root = document.documentElement;
+      var btn = document.getElementById('theme-toggle');
+
+      function label() {
+        btn.setAttribute('aria-checked', root.getAttribute('data-theme') === 'dark' ? 'true' : 'false');
+      }
+      function setTheme(t) {
+        root.setAttribute('data-theme', t);
+        try { localStorage.setItem('theme', t); } catch (e) {}
+        label();
+        window.dispatchEvent(new Event('themechange'));
+      }
+
+      label();
+      btn.addEventListener('click', function () {
+        setTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+      });
+    })();
+
+  </script>
+
+
+</body></html>

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="vi"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<title>Chuỗi welcome email — Khóa học YouTube AI</title>
+<meta content="Chuỗi 8 email, 5 giai đoạn, bài tập thực hành." name="description">
+<script>
+    /* Áp dụng chế độ sáng/tối trước khi trang hiện ra, tránh nhấp nháy */
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem('theme'); } catch (e) {}
+      if (t !== 'light' && t !== 'dark') {
+        t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+<style>
+    :root {
+      --bg: #fbf5df;
+      --ink: #0d0d0d;
+      --muted: #4f4e46;
+      --accent: #fbe9a6;       /* vàng pastel: nền nhãn, highlight */
+      --accent-2: #c4ecd3;     /* xanh lá pastel: nền nhãn, hover */
+      --accent-text: #0d0d0d;  /* chữ đặt trên nền pastel luôn đậm */
+      --label: #2f5d43;       /* màu nhãn nhỏ */
+      --dot: #0d0d0d;          /* màu chấm ảnh */
+      --btn-bg: #0d0d0d;
+      --btn-fg: #fbe9a6;
+      --panel: #0d0d0d;        /* khối liên hệ */
+      --panel-fg: #fbf5df;
+      --panel-muted: rgba(251, 245, 223, 0.75);
+      --green: var(--accent-2);
+      --green-deep: var(--label);
+      --yellow: var(--accent);
+      --mono: ui-monospace, "JetBrains Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+      --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color-scheme: light;
+    }
+    [data-theme="dark"] {
+      --bg: #121411;
+      --ink: #f3efdc;
+      --muted: #b9b6a6;
+      --label: #9fe0b8;
+      --dot: #f3efdc;
+      --btn-bg: #f3efdc;
+      --btn-fg: #0d0d0d;
+      --panel: #1d201b;
+      --panel-fg: #f3efdc;
+      --panel-muted: rgba(243, 239, 220, 0.72);
+      color-scheme: dark;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; border-radius: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+    a { color: var(--ink); }
+    .container { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+    .mono { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; }
+
+    .nav .container { display: flex; justify-content: space-between; align-items: center; height: 60px; }
+    .logo { font-weight: 800; font-size: 1.05rem; letter-spacing: -0.01em; text-decoration: none; color: var(--ink); }
+    .logo::after { content: "."; color: var(--green-deep); }
+    .nav-links a { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; }
+    .nav-links a:hover { text-decoration: underline; text-decoration-color: var(--green); text-decoration-thickness: 3px; text-underline-offset: 6px; }
+
+    .page-head { padding: 72px 0 56px; }
+    .back { display: inline-block; margin-bottom: 32px; font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; }
+    .back:hover { text-decoration: underline; text-decoration-color: var(--green); text-decoration-thickness: 3px; text-underline-offset: 6px; }
+    .note { display: inline-block; margin-bottom: 18px; padding: 4px 10px; background: var(--green); font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; }
+    h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; line-height: 1.08; letter-spacing: -0.03em; }
+    .intro { margin-top: 24px; max-width: 640px; color: var(--muted); font-size: 1.05rem; }
+
+    .plan { margin: 56px 0 72px; padding: 40px 36px 28px; border: 1px solid var(--ink); }
+    .plan-tag { display: inline-block; font-family: var(--mono); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; background: var(--yellow); color: var(--accent-text); padding: 4px 10px; }
+    .plan-sub { margin-top: 16px; color: var(--muted); max-width: 640px; }
+    .flow { list-style: none; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 0; margin: 32px 0 0; padding: 0; font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; }
+    .flow li { white-space: nowrap; }
+    .flow li + li::before { content: "→"; margin: 0 12px; color: var(--label); }
+    .flow .fnum { color: var(--label); margin-right: 8px; }
+    .stage-plan { margin-top: 56px; }
+    .sp-head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-bottom: 22px; }
+    .sp-num { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--label); }
+    .sp-head h2 { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.01em; }
+    .sp-count { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+    .em { margin-bottom: 36px; }
+    .em:last-child { margin-bottom: 0; }
+    .em-top { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-bottom: 8px; }
+    .em-no { font-family: var(--mono); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; background: var(--green); color: var(--accent-text); padding: 3px 8px; }
+    .em-goal { font-weight: 700; }
+    .beats { list-style: none; margin: 6px 0 10px; }
+    .beats li { position: relative; padding: 3px 0 3px 18px; }
+    .beats li::before { content: "—"; position: absolute; left: 0; color: var(--label); }
+    .em-cta { margin-top: 8px; }
+    .lbl { font-family: var(--mono); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--label); margin-right: 10px; }
+    .full { margin: 12px 0 14px; }
+    .full summary { display: inline-block; cursor: pointer; list-style: none; font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: underline; text-decoration-color: var(--green); text-decoration-thickness: 3px; text-underline-offset: 6px; }
+    .full summary::-webkit-details-marker { display: none; }
+    .full summary::after { content: " +"; }
+    .full[open] > summary::after { content: " −"; }
+    .full[open] > summary { margin-bottom: 20px; }
+    .k { font-weight: 700; }
+    .draft p { margin-bottom: 12px; }
+    .draft ul { list-style: none; margin: 6px 0 14px; }
+    .draft li { padding: 2px 0; }
+    @media (max-width: 760px) {
+      .plan { padding: 28px 20px 20px; }
+      .flow { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .flow li + li::before { content: "↓"; margin: 0 10px 0 0; }
+    }
+
+    footer { padding: 32px 0; }
+    footer .container { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; }
+    footer a { color: var(--ink); }
+
+    @media (max-width: 760px) {
+      .nav-links a { font-size: 0.66rem; }
+      .page-head { padding: 48px 0 40px; }
+    }
+  
+    /* ---------- Chế độ sáng / tối ---------- */
+    :root { --accent-text: #0d0d0d; }
+    body { transition: background-color 0.3s, color 0.3s; }
+    .nav-links { display: flex; gap: 28px; align-items: center; }
+    .theme-switch {
+      position: relative; width: 58px; height: 28px; padding: 0; flex: none;
+      border: 1px solid var(--ink); border-radius: 999px; background: transparent;
+      color: var(--ink); cursor: pointer;
+    }
+    .theme-switch:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+    .theme-switch .knob {
+      position: absolute; top: 2px; left: 2px; width: 22px; height: 22px; border-radius: 50%;
+      background: var(--ink); transition: transform 0.25s ease;
+    }
+    .theme-switch[aria-checked="true"] .knob { transform: translateX(30px); }
+    .theme-switch svg {
+      position: absolute; top: 50%; width: 14px; height: 14px; margin-top: -7px;
+      fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .theme-switch .ic-sun { left: 6px; }
+    .theme-switch .ic-moon { right: 6px; }
+    .theme-switch[aria-checked="false"] .ic-sun { color: var(--bg); }
+    .theme-switch[aria-checked="true"] .ic-moon { color: var(--bg); }
+    .ad-label span, .stage-label span, .note { color: var(--accent-text); }
+    .logo::after { color: var(--label); }
+
+    /* Modern editorial typography: no programming-style monospace */
+    :root { --mono: "Inter", "Segoe UI", Arial, sans-serif; --sans: "Inter", "Segoe UI", Arial, sans-serif; }
+    .mono, .nav-links a, .label, .note, .project-meta, .back, .ad-label,
+    .plan-tag, .flow, .sp-num, .sp-count, .em-no, .lbl, .full summary,
+    footer .container { font-family:var(--sans); letter-spacing:.015em; text-transform:none; }
+    .nav-links a { font-size:.86rem; font-weight:600; }
+    .mono { font-size:.84rem; font-weight:600; }
+    .label { font-size:.83rem; font-weight:650; letter-spacing:.015em; }
+    .note, .plan-tag, .em-no { font-size:.78rem; font-weight:650; letter-spacing:0; }
+    .project-meta, .sp-num, .sp-count, .lbl, .flow, .ad-label { font-size:.82rem; letter-spacing:0; }
+    .btn { font-family:var(--sans); font-size:.9rem; font-weight:650; letter-spacing:-.005em; text-transform:none; padding:13px 21px; transition:background-color .2s ease,color .2s ease,transform .2s ease; }
+    .btn:hover { transform:translateY(-2px); }
+    .tag { font-family:var(--sans); font-size:.82rem; letter-spacing:0; text-transform:none; font-weight:650; }
+    footer .container { font-size:.8rem; }
+    @media (prefers-reduced-motion:reduce) { .btn:hover {transform:none;} }
+  
+
+/* Shared visual language with approved portfolio home page */
+:root { --accent-2:#263B2B; --accent-text:#FFF8E6; --label:#263B2B; --panel:#263B2B; --panel-fg:#FFF8E6; --panel-muted:#E8E6D9; --mono:"Segoe UI",Inter,system-ui,Arial,sans-serif; --sans:"Segoe UI",Inter,system-ui,Arial,sans-serif; }
+[data-theme="dark"] { --accent-2:#A9D6AE; --accent-text:#15251A; --label:#A9D6AE; --panel:#A9D6AE; --panel-fg:#15251A; --panel-muted:#263B2B; }
+.nav .logo { font-family:var(--sans);font-size:1.28rem;font-weight:600;letter-spacing:-.025em;line-height:1.2; }
+.logo::after {content:none!important;display:none!important;}
+h1 {font-family:var(--sans);font-size:clamp(2.3rem,4.8vw,3.8rem);font-weight:700;line-height:1.26;letter-spacing:-.025em;overflow-wrap:break-word;}
+h2,h3 {font-family:var(--sans);line-height:1.32;letter-spacing:-.015em;}
+.note,.tag,.plan-tag,.stage-label span,.ad-label span {background:var(--accent-2);color:var(--accent-text)!important;}
+.note,.tag,.plan-tag,.stage-label span,.ad-label span {font-family:var(--sans);font-weight:650;letter-spacing:0;text-transform:none;}
+.nav-links a,.back,.mono,.ad-label,.lbl,.sp-num,.sp-count,.flow,footer .container {font-family:var(--sans);letter-spacing:0;text-transform:none;}
+[data-theme="dark"] .note,[data-theme="dark"] .tag,[data-theme="dark"] .plan-tag,[data-theme="dark"] .stage-label span,[data-theme="dark"] .ad-label span {background:#A9D6AE!important;color:#15251A!important;border-color:#A9D6AE!important;}
+[data-theme="dark"] .btn:hover {background:#A9D6AE!important;color:#15251A!important;border-color:#A9D6AE!important;}
+@media(max-width:700px){h1{font-size:clamp(2rem,8vw,3rem);line-height:1.3}.container{padding-inline:20px}}
+
+</style>
+<style>
+/* Portfolio case study: outline first, samples second */
+.plan { margin:34px 0 90px; border:0; padding:38px clamp(20px,4vw,48px); border-radius:22px; background:var(--outline-bg); }
+:root { --outline-bg:#f1ead6; --paper-bg:#fffdf6; --paper-border:rgba(18,20,17,.13); --paper-ink:#1c1e1b; }
+[data-theme="dark"] { --outline-bg:#1b211e; --paper-bg:#242925; --paper-border:rgba(240,239,220,.15); --paper-ink:#f3efdc; }
+.plan-tag,.sample-eyebrow { background:transparent; color:var(--muted); font-family:var(--sans); font-weight:700; font-size:.78rem; letter-spacing:.08em; }
+.plan-sub {font-size:1.03rem;line-height:1.8;}
+.flow {gap:12px 0; font-size:.83rem; line-height:1.5;}
+.stage-plan {margin-top:42px; padding-top:26px; border-top:1px solid var(--paper-border);}
+.stage-plan:first-of-type {border-top:0;}
+.sp-head {gap:12px;margin-bottom:18px;}
+.sp-head h2 {font-size:1.5rem;letter-spacing:-.03em;}
+.em {padding:18px 20px; margin:0 0 12px; background:var(--paper-bg); border:1px solid var(--paper-border); border-radius:13px;}
+.em-top {align-items:start;}
+.em-goal {flex:1;min-width:200px;}
+.em-no {border-radius:7px;white-space:nowrap; background:var(--ink);color:var(--bg);}
+.beats {margin-top:13px;}
+.beats li {line-height:1.72;}
+.samples-section {padding:20px 0 100px;}
+.samples-head {margin-bottom:40px;max-width:710px;}
+.samples-head h2 {font-size:clamp(2rem,4vw,2.8rem);line-height:1.16;letter-spacing:-.04em;margin:13px 0 16px;}
+.samples-head p {color:var(--muted);font-size:1.04rem;line-height:1.8;}
+.email-paper {background:var(--paper-bg);color:var(--paper-ink);border:1px solid var(--paper-border);border-radius:20px;padding:clamp(24px,5vw,56px);margin-bottom:42px;box-shadow:0 15px 40px rgba(0,0,0,.035);}
+.paper-top {display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;align-items:center;margin-bottom:22px;font-size:.82rem;font-weight:700;}
+.paper-number {padding:6px 11px;border-radius:8px;background:var(--ink);color:var(--bg);}
+.paper-type {color:var(--muted);}
+.email-paper h3 {font-size:clamp(1.5rem,3vw,2rem);letter-spacing:-.035em;margin-bottom:28px;}
+.email-paper .draft {max-width:680px;}
+.email-paper .draft p {margin-bottom:17px;line-height:1.85;}
+.email-paper .draft ul {padding-left:12px;margin-bottom:20px;}
+.email-paper .draft li {padding:5px 0;line-height:1.75;}
+@media(max-width:680px){.plan{padding:24px 17px;margin-bottom:64px}.em{padding:16px 14px}.stage-plan{margin-top:32px}.samples-section{padding-bottom:55px}.email-paper{border-radius:14px}}
+</style><style>
+/* Complete Docs-style planning table */
+.plan{background:transparent!important;padding:0!important;margin-top:38px!important}
+.full-table-header{display:flex;justify-content:space-between;align-items:flex-end;gap:28px;margin-bottom:20px}
+.full-table-header h2{font-family:var(--sans);font-size:clamp(1.55rem,3vw,2.3rem);letter-spacing:-.035em;margin:14px 0 8px}
+.full-table-header p{color:var(--muted);line-height:1.65;margin:0}
+.docs-original{flex-shrink:0;text-decoration:none;color:var(--ink);border:1px solid var(--paper-border);border-radius:50px;padding:12px 18px;font-size:.86rem;font-weight:650;transition:background .2s}
+.docs-original:hover{background:var(--outline-bg)}
+.table-hint{font-size:.78rem;color:var(--muted);margin:0 0 10px}
+.table-scroll{width:100%;overflow-x:auto;border:1px solid var(--paper-border);border-radius:14px;background:var(--paper-bg);box-shadow:0 12px 40px rgba(0,0,0,.035)}
+.strategy-table{width:100%;min-width:980px;border-collapse:separate;border-spacing:0;table-layout:fixed;color:var(--paper-ink);font-family:var(--sans);font-size:.88rem;line-height:1.65}
+.strategy-table th{text-align:left;padding:17px 17px;background:var(--outline-bg);color:var(--paper-ink);font-size:.82rem;font-weight:750;position:sticky;top:0;z-index:2}
+.strategy-table td{vertical-align:top;padding:21px 17px;border-top:1px solid var(--paper-border);overflow-wrap:anywhere}
+.strategy-table td+td,.strategy-table th+th{border-left:1px solid var(--paper-border)}
+.strategy-table .col-stt{font-weight:800;font-size:1.02rem}
+.strategy-table .col-stage{font-weight:750}
+.strategy-table .col-goal{font-weight:560}
+.outline-subject{font-weight:750;margin-bottom:10px;line-height:1.5}
+.outline-beat{padding-left:15px;position:relative;margin:6px 0}
+.outline-beat:before{content:'•';position:absolute;left:1px}
+.outline-extra{margin-top:8px}
+.strategy-table tbody tr:hover td{background:var(--outline-bg)}
+@media(max-width:720px){.full-table-header{display:block}.docs-original{display:inline-block;margin-top:16px}.strategy-table{min-width:900px}}
+</style>
+</head>
+<body>
+<nav class="nav">
+<div class="container">
+<a class="logo" href="index.html">Ruwei</a>
+<div class="nav-links">
+<a href="index.html#du-an">Dự án</a>
+<button aria-checked="false" aria-label="Chế độ tối" class="theme-switch" id="theme-toggle" role="switch" type="button"><span class="knob"></span><svg aria-hidden="true" class="ic-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><svg aria-hidden="true" class="ic-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></button>
+</div>
+</div>
+</nav>
+<header class="page-head">
+<div class="container">
+<a class="back" href="index.html#du-an">← Quay lại trang chính</a>
+<div><span class="note">Dự án trong quá trình học Copywriting</span></div>
+<h1>Chuỗi welcome email — Khóa học YouTube AI</h1>
+<p class="intro">Outline chiến lược cho chuỗi 8 email, tiếp theo là 2 email mẫu được triển khai hoàn chỉnh.</p>
+</div>
+</header>
+<div class="container">
+<div class="plan"><div class="full-table-header"><div><span class="plan-tag">01 / OUTLINE CHIẾN LƯỢC</span><h2>Bảng kế hoạch Welcome Email Sequence</h2><p>Toàn bộ 8 email, 5 giai đoạn thuyết phục khách hàng</p></div><a class="docs-original" href="https://docs.google.com/document/d/1ndp56zzQ91M35HGZy4dYyxiOxMrFE4rzZBWTNJ1vvBM/edit" target="_blank" rel="noopener noreferrer">Xem bản Google Docs gốc ↗</a></div><p class="table-hint">Trên điện thoại, vuốt ngang để xem đủ 4 cột.</p><div class="table-scroll" tabindex="0" aria-label="Bảng kế hoạch 8 email có thể cuộn ngang"><table class="strategy-table"><colgroup><col style="width:5%"><col style="width:16%"><col style="width:26%"><col style="width:53%"></colgroup><thead><tr><th>STT</th><th>Giai đoạn</th><th>Email (Goal)</th><th>Outline</th></tr></thead><tbody><tr><td class="col-stt">1</td><td class="col-stage">GĐ 1: Nhận thức nỗi đau</td><td class="col-goal">Email 1 Chào mừng + Set authority + Càng sớm bắt đầu càng sớm có kết quả -&gt; Học ngay</td><td class="col-outline"><div class="outline-subject">SL: [SOS] Khóa YouTube AI đã được trao… và đây là lưu ý</div><div class="outline-beat">Chúc mừng KH đã đăng ký thành công khóa học miễn phí + đưa link</div><div class="outline-beat">Giới thiệu về anh Huân =&gt; để ngta tin tưởng bấm vào xem bài học</div><div class="outline-beat">Từ kinh nghiệm của tôi muốn kiếm ra tiền từ YouTube bạn phải nghiêm túc đầu tư công sức [mô tả]. Bắt đầu càng sớm, bạn càng sớm có được kết quả.</div><div class="outline-beat">Nhưng có tới 80% người đăng ký khóa học YouTube AI còn chưa xem hết 1 video.</div><div class="outline-beat">Trong lúc họ chần chừ thì những người khác đang [kết quả KH mơ ước]</div><div class="outline-beat">CTA:</div><div class="outline-beat">Nếu bạn nghiêm túc kiếm tiền từ YouTube HÃY HÀNH ĐỘNG NGAY</div><div class="outline-beat">Chỉ cần 15 phút cho bài học dưới đây và thực sự bắt đầu hành trình của riêng mình.</div><div class="outline-beat">https://huan.academy/learn/study/lam-youtube-kiem-duoc-bao-nhieu-tien-mot-thang/</div></td></tr><tr><td class="col-stt">2</td><td class="col-stage">GĐ 1: Nhận thức nỗi đau</td><td class="col-goal">Email2: Nhấn mạnh nỗi đau bất an tài chính, càng lớn tuổi càng nhiều thứ phải lo toan. Kể câu chuyện bạn nữ cựu công nhân ở quê (Từ công nhân xoay ca lên 50 triệu/tháng, 400 triệu/năm).</td><td class="col-outline"><div class="outline-subject">SL: Từ cô công nhân đến thu nhập đột phá trên Youtube</div><div class="outline-beat">50 triệu/tháng, 400 triệu/năm là mức thu nhập của công nhân bạn tin không?</div><div class="outline-beat">Nữ học viên của tôi từng làm công nhân ở quê, đi làm từ sáng sớm đến tối mịt, mệt mỏi vì xoay ca ngày - đêm, tăng ca nhưng không có tiền</div><div class="outline-beat">Lúc nào cũng phải chi tiêu tiết kiệm, tiền làm ra chỉ đủ đáp ứng sinh hoạt hằng ngày. Còn phải lo lắng cho ba mẹ ở quê. Cảm giác tương lai mịt mờ.</div><div class="outline-beat">Biết đến anh Huân và việc làm Youtube kiếm ra tiền</div><div class="outline-beat">Được định hướng tận dụng nguồn lực có sẵn là 1 đàn gà nuôi ở nhà. Bạn lập kênh quay cảnh chăm gà, thu hoạch trứng gà, tự học edit bằng điện thoại rồi sắm máy tính làm video…</div><div class="outline-beat">Kết quả: Sau 3–4 tháng bắt đầu có dòng tiền. Thu nhập duy trì ổn định 40–50 triệu VNĐ/tháng (tích lũy 400 triệu/năm), tiếp tục hướng tới mục tiêu 100 triệu/tháng và nhân bản kênh.</div><div class="outline-beat">Cảm thấy nhẹ nhõm, không còn mệt mỏi vì tăng ca, ngủ ngon,...</div><div class="outline-beat">Đúc kết YouTube là con đường kiếm tiền không giới hạn, thu nhập thụ động 24/7, nằm ngủ cũng kiếm được tiền, chỉ cần kiên trì theo đúng lộ trình.</div><div class="outline-beat">CTA: Quay lại lộ trình của bạn: “Bắt đầu 1 mình thì làm thế nào”</div></td></tr><tr><td class="col-stt">3</td><td class="col-stage">GĐ 2: Tin vào giải pháp</td><td class="col-goal">Email 3 Đạp đổ niềm tin để viral cần phải may mắn hay sáng tạo. Kể câu chuyện của anh Huân và cách anh tìm ra Jetlag.</td><td class="col-outline"><div class="outline-subject">SL: Ngòi nổ TRIỆU VIEW</div><div class="outline-beat">Video triệu view là do người ta giỏi sáng tạo? Hoặc do người ta may mắn?</div><div class="outline-beat">Tôi đã từng nghĩ như vậy và mất 6 tháng để biết mình sai.</div><div class="outline-beat">Hôm nay tôi sẽ chia sẻ cho bạn cách tôi tạo nên HÀNG NGÀN VIDEO TRIỆU VIEW từ sai lầm của mình.</div><div class="outline-beat">Kể câu chuyện anh Huân [bối cảnh làm kỹ sư, không có kinh nghiệm...]</div><div class="outline-beat">Ban đầu làm theo cảm tính, 6 tháng đầu k ra kết quả, view lẹt đẹt, muốn bỏ cuộc.</div><div class="outline-beat">Về đọc sách, xem video hàng trăm video, hàng trăm kênh của đối thủ, để rút ra được được công thức chung</div><div class="outline-beat">"Thứ đã phổ biến ở nơi này có thể phổ biến ở nơi khác, thứ đã phổ biến ở chủ đề này có thể phổ biến ở chủ đề khác, thứ đã phổ biến ở Quốc gia này có thể phổ biến ở Quốc gia khác".</div><div class="outline-beat">Áp dụng và 9 tháng sau video đạt 500 nghìn view trong 48 giờ giúp có được thu nhập 100 triệu/tháng</div><div class="outline-beat">CTA: Xem ngay các áp dụng công thức JETLAG</div><div class="outline-extra">https://huan.academy/learn/study/jetlag-trieu-view/</div></td></tr><tr><td class="col-stt">4</td><td class="col-stage">GĐ 3: Tin vào sản phẩm</td><td class="col-goal">Email 4 Không phải cứ nhiều view là sẽ kiếm được tiền, phải biết luật nền tảng -&gt; Trao giá trị</td><td class="col-outline"><div class="outline-subject">SL: Đừng để công sức của bạn trở nên vô ích</div><div class="outline-beat">Bạn nghĩ rủi ro lớn nhất khi làm YouTube là không có view?</div><div class="outline-beat">Rủi ro lớn hơn là view lên đủ nhiều mới nhận được thông báo từ chối bật kiếm tiền.</div><div class="outline-beat">Người mới khi bắt đầu thường tìm hết mọi cách để kiếm được view, ai làm gì view cao cũng học theo, ai làm gì hay cũng bắt chước.</div><div class="outline-beat">Để rồi sau 3 - 4 tháng khi bắt đầu có nhiều view</div><div class="outline-beat">Mới phát hiện kênh mình vi phạm chính sách, không được bật kiếm tiền. Công sức đổ sông đổ bể</div><div class="outline-beat">Nên ngay từ lúc bắt đầu, muốn làm Youtube bền vững, bạn cần phải tìm hiểu kỹ cách chính sách của nền tảng</div><div class="outline-beat">Phải hiểu luật chơi để đảm bảo mình không bị loại, rồi sau đó mới làm sao để chơi cho giỏi</div><div class="outline-beat">Như em học viên làm IT của tôi</div><div class="outline-beat">Trước khi học, em làm kênh đầu tiên không đúng chính sách, phải bỏ.</div><div class="outline-beat">Được tôi hỗ trợ khám kênh và tư vấn em làm lại kênh mới, đến tháng 9/2024 (sau 6 tháng) được bật kiếm tiền.</div><div class="outline-beat">Kết quả: Chỉ trong 2 tháng tiếp theo ( kênh mang về 60.000 USD</div><div class="outline-beat">Chỉ cần đúng luật, đúng quy trình thì nguồn tiền từ YouTube sẽ đến với bạn một cách bền vững.</div><div class="outline-beat">CTA 1: Hãy bắt đầu với một trong những luật kiếm tiền của YouTube: Luật Fairuse chi tiết của GODA đang áp dụng ra tiền ngay và các lưu ý quan trọng</div><div class="outline-beat">CTA 2: P/s: Trong trường hợp bạn vẫn lo lắng khó nắm hết luật. Luật thay đổi lúc nào k biết. -&gt; Premium cung cấp tài liệu, có mentor, có khám kênh và giúp kháng cáo.</div></td></tr><tr><td class="col-stt">5</td><td class="col-stage">GĐ 3: Tin vào sản phẩm</td><td class="col-goal">Email 5 Kể câu chuyện Giàng A Sinh kết luận không biết kỹ thuật, không rành công nghệ vẫn làm được Youtube -&gt; khóa premium hỗ trợ kỹ thuật 24/7</td><td class="col-outline"><div class="outline-subject">SL: Cậu em người dân tộc đổi đời nhờ làm YouTube</div><div class="outline-beat">Không giỏi kỹ thuật, không rành công nghệ có làm được không?</div><div class="outline-beat">Kể câu chuyện Giàng A Sinh xuất thân người dân tộc, không rành công nghệ</div><div class="outline-beat">Biết đến khóa anh Huân dạy làm video mà chỉ cần AI, không cần quay phim. Chỉnh sửa Capcut, Canva đơn giản, dễ hiểu, dễ làm theo.</div><div class="outline-beat">Sau đó kiên trì và thành công, lo toan được cho cuộc sống của gia đình và còn dạy lại được cho em trai</div><div class="outline-beat">Chỉ cần bạn nghiêm túc bỏ thời gian, công sức., làm theo đúng những gì đã được hướng dẫn trong khóa thì bạn sẽ làm được</div><div class="outline-beat">P/s: Nếu muốn tiết kiệm 6-12 tháng thử sai hay hoang mang tự mò mẫm</div><div class="outline-beat">Trong khóa premium quy trình chi tiết hơn cách làm video bằng AI từ A-Z, có hỗ trợ kỹ thuật 24/7, có mentor cầm tay chỉ việc. Đang có chương trình giảm giá, hết hạn trong 5 ngày vì bạn đã nỗ lực bắt đầu làm YouTube, mã không công bố rộng rãi, tranh thủ thời gian</div></td></tr><tr><td class="col-stt">6</td><td class="col-stage">GĐ 3: Tin vào sản phẩm</td><td class="col-goal">Email 6 Kể câu chuyện mẹ bỉm sữa kết luận không có thời gian vẫn làm được Youtube -&gt; khóa premium giúp học nhanh hơn, đỡ vất vả hơn.</td><td class="col-outline"><div class="outline-subject">SL: 1000 USD trong vòng 9 ngày</div><div class="outline-beat">Đi làm ngày 8 tiếng, thường xuyên phải tăng ca, sợ không có thời gian?</div><div class="outline-beat">Người bận rộn nhất vẫn đang kiếm tiền mỗi ngày với Youtube</div><div class="outline-beat">Kể câu chuyện mẹ bỉm sữa, zalo tên “Cà Chua”, bận rộn chăm con và nỗi lo cơm áo gạo tiền, từng làm YouTube 8 tháng nhưng view lẹt đẹt mất niềm tin.</div><div class="outline-beat">Biết đến anh khóa học của anh Huân</div><div class="outline-beat">Lộ trình rõ ràng không còn phải loay hoay với đống kiến thức rải rác trên mạng. Video ngắn nên linh hoạt được theo lịch cá nhân, rảnh lúc nào học lúc đấy. Chủ động hỏi mentor để tiết kiệm thời gian sửa sai.</div><div class="outline-beat">Sau một tháng hoàn thiện lại kênh, 9 ngày đầu tháng 9/2024 kiếm được 1000 USD đầu tiên.</div><div class="outline-beat">Đúc kết: Ít thời gian cũng được (chỉ cần 1-2 tiếng/ ngày), có được sự rõ ràng, làm cái gì, làm như thế nào, rồi cứ thế làm theo thì sẽ có được kết quả</div><div class="outline-beat">CTA: Khóa premium lộ trình nâng cấp từ A - Z, có mentor hỗ trợ, tránh lặp lại sai lầm, đỡ vất vả, rút ngắn thời gian học. Đang có mã giảm giá.</div></td></tr><tr><td class="col-stt">7</td><td class="col-stage">GĐ 4: Tin vào mức giá phải trả</td><td class="col-goal">Email 7 Kể câu chuyện anh Đăng từ phá sản, rơi vào trầm cảm đến học YTS và cú lội ngược dòng ngoạn mục</td><td class="col-outline"><div class="outline-subject">SL: Từ phá sản đến 1 tỷ đồng/tháng</div><div class="outline-beat">Chi 26.868.000 VNĐ cho một khóa học liệu có đáng hay không?</div><div class="outline-beat">Tôi tin rằng không nếu bạn chỉ đang muốn mình có một cuộc sống ổn định, ngày đi làm 8-9 tiếng, cuối tháng nhận lương từ công ty, sáng uống cà phê chốn công sở, tối về đắp chăn xem tivi.</div><div class="outline-beat">Còn những người mong muốn cuộc sống mình không chỉ dừng ở mức ổn định thì lại khác.</div><div class="outline-beat">Kể câu chuyện anh Đăng phá sản, mất trắng, lâm vào bế tắc tài chính, trầm cảm</div><div class="outline-beat">Đang lúc đó học YTS, được mentor hỗ trợ tinh thần, tư vấn để phát hiện ra chủ đề thị trường Mỹ có RPM cao</div><div class="outline-beat">Tiếp tục làm, được mentor hỗ trợ sửa sai, làm lại và sau đó thành công</div><div class="outline-beat">Chỉ cần các bạn làm: Đúng chủ đề + Đúng quy trình + Kiên trì làm 3-4h mỗi ngày là các bạn sẽ thành công</div><div class="outline-beat">CTA: Muốn được hỗ trợ như anh Đăng để rút ngắn thời gian, tiếp thêm tinh thần, hãy nâng cấp premium. Đang có mã giảm giá</div></td></tr><tr><td class="col-stt">8</td><td class="col-stage">GĐ 5: Hành động NGAY</td><td class="col-goal">Email 8 Nhắc mã giảm sắp hết hạn</td><td class="col-outline"><div class="outline-subject">SL: Cơ hội cuối bạn còn 12 tiếng.</div><div class="outline-beat">Nhắc mã giảm sắp hết hạn</div><div class="outline-beat">Bạn sẽ được giảm 15% giá trị khóa học, tương ứng với 4.030.200Đ khi nâng cấp Premium Youtube Total Success</div><div class="outline-beat">Đây gần như là mức ưu đãi CAO NHẤT mà tôi từng dành tặng cho cộng đồng anh em làm Youtube.</div><div class="outline-beat">Gửi testimonial cách Overload (nhiều hình, cap ngắn gọn)</div><div class="outline-beat">Cam kết hoàn tiền trong 7 ngày nếu không phù hợp.</div><div class="outline-beat">CTA: Nâng cấp khóa premium ngay hôm nay để không bỏ lỡ cơ hội</div></td></tr></tbody></table></div></div>
+<section class="samples-section" id="email-mau"><div class="samples-head"><span class="sample-eyebrow">02 / BÀI VIẾT MẪU</span><h2>Hai email được triển khai từ outline</h2><p>Đây là hai email hoàn chỉnh tôi đã viết trong chuỗi 8 email phía trên.</p></div><article class="email-paper" id="email-mau-1"><div class="paper-top"><span class="paper-number">EMAIL 01</span><span class="paper-type">Chào mừng · Khởi động</span></div><div class="draft">
+<p><span class="k">Tiêu đề (Opt 1):</span> [SOS] Khóa YouTube AI đã được trao… và đây là lưu ý</p>
+<p><span class="k">Tiêu đề (Opt 2):</span> Chào mừng 🎉 Đây là khóa học YouTube AI của bạn</p>
+<p>Chúc mừng [Name] đã đăng ký thành công khóa học miễn phí.</p>
+<p>[Kiếm tiền từ YouTube và AI] (Nhấn vào đây để truy cập khóa học)</p>
+<p>Đây là bộ hơn 40 bài học miễn phí giúp bạn từng bước tìm hiểu:</p>
+<ul>
+<li>• Cách nghiên cứu chủ đề và lựa chọn ngách nội dung, giúp tăng tỉ lệ đề xuất của video và số tiền kiếm được trên mỗi view.</li>
+<li>• Quy trình xây dựng video với sự hỗ trợ của công cụ AI, tăng tốc độ sản xuất video chất lượng lên 2-3 lần.</li>
+<li>• Cách tổ chức công việc khi chỉ có một người thực hiện, đảm bảo được chất lượng đầu ra cho từng video.</li>
+<li>• Kiến thức về phát triển và tối ưu kênh đúng chính sách YouTube, giúp kênh kiếm tiền bền vững và lâu dài.</li>
+<li>• Những lỗi phổ biến người mới thường gặp.</li>
+</ul>
+<p>Trong trường hợp bạn thắc mắc tôi là ai?</p>
+<p>Tôi là Nguyễn Văn Huân, Founder của Huan.Academy.</p>
+<p>Với 5 Nút Vàng, hơn 40 Nút Bạc và tổng cộng hơn 15 triệu người đăng ký trên YouTube.</p>
+<p>Tôi đã xây dựng 2 doanh nghiệp với quy mô 250 người từ việc làm YouTube.</p>
+<p>Tôi cũng là người duy nhất tại Việt Nam ra mắt chương trình kèm cặp YouTube 1-1 đến khi ra tiền, đã giúp hơn 1.000 học viên tạo thu nhập thành công từ YouTube.</p>
+<p>Kiến thức tôi chia sẻ đều dựa trên kinh nghiệm thực chiến, từ kết quả thực tế để hướng dẫn bạn xây dựng nguồn thu nhập thụ động từ YouTube không giới hạn.</p>
+<p>Và theo kinh nghiệm của tôi…</p>
+<p>Muốn kiếm ra tiền từ YouTube, bạn phải nghiêm túc đầu tư thời gian và công sức.</p>
+<p>Dành ít nhất 1-2 tiếng mỗi ngày để học và làm theo video hướng dẫn.</p>
+<p>Duy trì đều đặn từ 4-6 tháng.</p>
+<p class="k">Càng sớm bắt đầu, càng sớm có kết quả.</p>
+<p>Tuy nhiên số liệu cho thấy có tới 80% người đăng ký khóa học miễn phí của tôi còn chưa xem hết 1 video.</p>
+<p>Trong lúc họ còn đang chần chừ thì:</p>
+<ul>
+<li>• Có ai đó vừa kiếm được 300$ từ video đang được đề xuất.</li>
+<li>• Có ai đó vừa bật kiếm tiền kênh thứ 2.</li>
+<li>• Có ai đó từ 0 kinh nghiệm đã đạt 1.000$/tháng.</li>
+</ul>
+<p>Vậy nên nếu bạn thực sự nghiêm túc với mục tiêu kiếm tiền từ YouTube, <b>HÃY HÀNH ĐỘNG NGAY hôm nay!</b></p>
+<p>Dành ra 15 phút để học bài học đầu tiên:</p>
+<p>👉 [LÀM YOUTUBE KIẾM ĐƯỢC BAO NHIÊU TIỀN MỘT THÁNG]</p>
+<p>Và bạn sẽ nằm trong top 20% những người nghiêm túc theo đuổi giấc mơ của mình.</p>
+<p>Trân trọng,<br>Huân</p>
+<p>P/s: Sắp tới mỗi 2 ngày, tôi sẽ gửi bạn một câu chuyện hay từ những anh em đã đổi đời nhờ YouTube và cách bạn có thể làm tương tự. Chờ nhé!</p>
+</div></article><article class="email-paper" id="email-mau-4"><div class="paper-top"><span class="paper-number">EMAIL 04</span><span class="paper-type">Giá trị · Chính sách YouTube</span></div><div class="draft">
+<p><span class="k">Tiêu đề (Opt 1):</span> Đừng để 4 tháng làm YouTube trở nên vô ích</p>
+<p><span class="k">Tiêu đề (Opt 2):</span> Video triệu view có thể hủy hoại kênh của bạn</p>
+<p>Có thể bạn nghĩ: rủi ro lớn nhất khi làm YouTube là không có view?</p>
+<p>Nhưng với 9+ năm kinh nghiệm làm YouTube, có 5 Nút Vàng, hơn 40 Nút Bạc và tổng cộng hơn 15 triệu người đăng ký.</p>
+<p>Thì tôi chia sẻ cho bạn một sự thật: <b>view lên đủ cao mà kênh lại KHÔNG KIẾM ĐƯỢC TIỀN</b> mới là rủi ro lớn hơn cả.</p>
+<p>Để tôi giải thích cho bạn tại sao.</p>
+<p>Người mới khi bắt đầu làm YouTube thường tìm đủ mọi cách để tăng view.</p>
+<p>Ai làm gì view cao cũng học theo, ai làm gì hay cũng bắt chước.</p>
+<p>Bất chấp ý tưởng, bất chấp nội dung. Nhưng đó có thể là:</p>
+<ul>
+<li>• Những nội dung chứa hình ảnh bạo lực, phản cảm.</li>
+<li>• Những nội dung được sao chép y như bản gốc.</li>
+<li>• Những nội dung mang nặng tính bản quyền.</li>
+</ul>
+<p>Để rồi kênh hoạt động sau 3-4 tháng, từ lúc view lẹt đẹt đến khi view bắt đầu bùng phát, hào hứng xin bật kiếm tiền từ YouTube thì mới nhận được thông báo: <b>"Video trên kênh vi phạm chính sách nền tảng."</b></p>
+<p>Kết quả? <b>KHÔNG KIẾM ĐƯỢC ĐỒNG NÀO!</b></p>
+<p>Tất cả cố gắng sau giờ làm việc ở công ty, những đêm thức tận 2-3h sáng… đều đổ sông đổ bể.</p>
+<p>Tưởng chừng như sắp thắng đến nơi, cuối cùng lại quay về con số 0.</p>
+<p>Và rất có thể, lúc đó bạn sẽ cảm thấy tuyệt vọng, muốn từ bỏ luôn việc làm YouTube.</p>
+<p class="k">Vậy nên, nếu muốn kiếm tiền bền vững từ YouTube, bạn phải hiểu rõ:</p>
+<ul>
+<li>• Nội dung nào được phép làm, nội dung nào sẽ bị YouTube cấm.</li>
+<li>• Nếu lấy ý tưởng từ người khác, phải sử dụng ý tưởng đó như thế nào.</li>
+<li>• Ai là người bạn có thể lấy nội dung từ họ, ai thì không được phép.</li>
+</ul>
+<p>Và sau khi bạn đã hiểu rõ luật chơi, mới là lúc bạn tìm cách chơi sao cho giỏi.</p>
+<p>Như em học viên làm IT của tôi. Trước đó, kênh đầu tiên em làm video theo dạng re-up, sao chép y chang video của người khác. Dù đã có hơn 100 video và lượt view ổn, nhưng vẫn không được YouTube cho bật kiếm tiền.</p>
+<p>Sau khi tham gia khóa 2 YouTube Total Success Premium, em được tôi khám kênh và tư vấn kỹ về luật của YouTube, em bắt đầu làm lại kênh mới. Đến tháng 9/2024, sau 6 tháng, kênh của em được bật kiếm tiền. Và chỉ trong 2 tháng tiếp theo… <b>KÊNH MANG VỀ 60.000$!</b></p>
+<p>Thật đáng mừng đúng không?</p>
+<p>Chỉ cần bạn làm đúng luật, đúng quy trình, kênh của bạn sẽ phát triển bền vững.</p>
+<p>Không dính gậy hoặc bị quét mỗi đợt YouTube siết chặt chính sách.</p>
+<p>Từ đó bạn sẽ có được thu nhập ổn định, mọi công sức bạn bỏ ra đều được đền đáp xứng đáng.</p>
+<p>Bây giờ bạn có thể bắt đầu với việc <b>tìm hiểu</b> một trong những luật kiếm tiền của YouTube ngay dưới đây: [Luật Fairuse chi tiết của GODA đang áp dụng ra tiền].</p>
+<p>Đây là luật về cách lấy ý tưởng, nội dung từ người khác mà tôi và đội ngũ dùng mỗi ngày để đảm bảo không vi phạm chính sách.</p>
+<p>Bạn xem qua và làm theo nhé.</p>
+<p>Huân</p>
+<p>P/S: Nếu bạn vẫn đang lo lắng khó nắm hết được luật YouTube hoặc tương lai luật thay đổi mà bạn không hề hay biết. Thì khi nâng cấp lên khóa YOUTUBE TOTAL SUCCESS Premium:</p>
+<ul>
+<li>• Bạn sẽ được chia sẻ tài liệu cập nhật liên tục, đầy đủ, về luật của YouTube với những giải thích chi tiết, dễ hiểu.</li>
+<li>• Có mentor đồng hành sát sao để bạn tránh đi những sai lầm đáng tiếc.</li>
+<li>• Có đội ngũ khám kênh, giúp kháng cáo lấy lại kênh nếu bạn lỡ vi phạm chính sách nền tảng.</li>
+</ul>
+<p>[Xem toàn bộ quyền lợi khóa YOUTUBE TOTAL SUCCESS tại đây]</p>
+</div></article></section></div>
+<footer>
+<div class="container">
+<span>© 2026 Ruwei</span>
+<a href="index.html#du-an">← Quay lại trang chính</a>
+</div>
+</footer>
+<script>
+    /* ---------- Chế độ sáng / tối ---------- */
+    (function () {
+      var root = document.documentElement;
+      var btn = document.getElementById('theme-toggle');
+
+      function label() {
+        btn.setAttribute('aria-checked', root.getAttribute('data-theme') === 'dark' ? 'true' : 'false');
+      }
+      function setTheme(t) {
+        root.setAttribute('data-theme', t);
+        try { localStorage.setItem('theme', t); } catch (e) {}
+        label();
+        window.dispatchEvent(new Event('themechange'));
+      }
+
+      label();
+      btn.addEventListener('click', function () {
+        setTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+      });
+    })();
+
+  </script>
+
+
+</body></html>
