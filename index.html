@@ -658,4 +658,38 @@ html[data-theme="dark"] #du-an .project a.btn.btn-ghost:hover {
 </script>
 
 
-<script>(function(){var b=document.getElementById('contact-reveal'),d=document.getElementById('contact-details');b.addEventListener('click',function(){var opening=d.hidden;d.hidden=!opening;b.textContent=opening?'Liên hệ ↓':'Liên hệ →';b.setAttribute('aria-expanded',String(opening));});})();</script></body></html>
+<script>(function(){var b=document.getElementById('contact-reveal'),d=document.getElementById('contact-details');b.addEventListener('click',function(){var opening=d.hidden;d.hidden=!opening;b.textContent=opening?'Liên hệ ↓':'Liên hệ →';b.setAttribute('aria-expanded',String(opening));});})();</script>
+<script id="ruwei-version-check-20261102">
+/* Chỉ kiểm tra khi quay lại tab; không tự tải lại định kỳ. */
+(function () {
+  var version = '2026-11-02-portfolio-1';
+  var lastCheck = 0;
+  var checking = false;
+  function checkForUpdate() {
+    if (document.visibilityState !== 'visible' || checking) return;
+    var now = Date.now();
+    if (now - lastCheck < 10000) return;
+    lastCheck = now;
+    checking = true;
+    var url = new URL(window.location.href);
+    url.searchParams.set('_ruwei_check', String(now));
+    fetch(url.toString(), {cache: 'no-store'})
+      .then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.text(); })
+      .then(function (html) {
+        var match = html.match(/var version = '([^']+)';/);
+        if (match && match[1] !== version) {
+          var reloadUrl = new URL(window.location.href);
+          reloadUrl.searchParams.set('_ruwei_v', match[1]);
+          window.location.replace(reloadUrl.toString());
+        }
+      })
+      .catch(function () { /* Không làm gián đoạn người xem khi mất mạng. */ })
+      .finally(function () { checking = false; });
+  }
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'visible') checkForUpdate();
+  });
+  window.addEventListener('focus', checkForUpdate);
+})();
+</script>
+</body></html>
